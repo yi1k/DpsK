@@ -8,7 +8,7 @@
   "main": "src/main.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/YOUR_GITHUB_USERNAME/dsh-desktop.git"
+    "url": "https://github.com/yi1k/DpsK.git"
   },
   "scripts": {
     "start": "electron .",
@@ -58,8 +58,8 @@
     },
     "publish": {
       "provider": "github",
-      "owner": "YOUR_GITHUB_USERNAME",
-      "repo": "dsh-desktop"
+      "owner": "yi1k",
+      "repo": "DpsK"
     }
   }
 }
