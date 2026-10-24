@@ -59,7 +59,8 @@
     "publish": {
       "provider": "github",
       "owner": "yi1k",
-      "repo": "DpsK"
+      "repo": "DpsK",
+      "releaseType": "release"
     }
   }
 }
