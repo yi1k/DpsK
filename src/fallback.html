@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline'; script-src 'unsafe-inline'" />
+  <title>无法连接 - DeepSeek Harness 桌面端</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+      background: radial-gradient(1200px 700px at 20% 0%, #16233f 0%, #0b1220 55%, #070b14 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      width: 100%; max-width: 600px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      border-radius: 16px;
+      padding: 32px 32px 24px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+    }
+    .logo {
+      width: 52px; height: 52px; border-radius: 13px;
+      background: linear-gradient(135deg, #4f46e5, #0f172a);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 700; color: #fff;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    h1 { font-size: 19px; font-weight: 600; margin-bottom: 6px; }
+    .sub { color: #94a3b8; font-size: 13px; line-height: 1.6; margin-bottom: 20px; }
+    .sub code {
+      background: rgba(99, 102, 241, 0.18); color: #c7d2fe;
+      padding: 2px 7px; border-radius: 6px; font-size: 12px;
+    }
+    label { display: block; font-size: 12.5px; color: #94a3b8; margin-bottom: 6px; }
+    .row { display: flex; gap: 10px; margin-bottom: 10px; }
+    input[type="text"] {
+      flex: 1; padding: 9px 12px; border-radius: 8px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: rgba(2, 6, 23, 0.6); color: #e2e8f0; font-size: 13px;
+      outline: none; min-width: 0;
+    }
+    input[type="text"]:focus { border-color: #6366f1; }
+    button {
+      cursor: pointer; border: 0; border-radius: 8px;
+      font-size: 13px; padding: 9px 16px; font-weight: 600;
+      transition: filter 0.15s ease; white-space: nowrap;
+    }
+    button:hover { filter: brightness(1.12); }
+    .btn-primary {
+      background: linear-gradient(90deg, #6366f1, #4f46e5); color: #fff;
+    }
+    .btn-ghost {
+      background: rgba(148, 163, 184, 0.12); color: #cbd5e1;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+    .section {
+      margin-top: 16px; padding: 14px 16px; border-radius: 10px;
+      background: rgba(2, 6, 23, 0.5); border: 1px solid rgba(148, 163, 184, 0.15);
+    }
+    .section h2 { font-size: 13px; font-weight: 600; color: #a5b4fc; margin-bottom: 10px; }
+    .check {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: #cbd5e1; margin-bottom: 10px; cursor: pointer;
+    }
+    .check input { width: 15px; height: 15px; accent-color: #6366f1; cursor: pointer; }
+    .status { font-size: 12.5px; color: #94a3b8; margin-top: 8px; min-height: 18px; }
+    .status .tag { font-weight: 600; }
+    .status .tag.s0 { color: #94a3b8; }
+    .status .tag.s1 { color: #fbbf24; }
+    .status .tag.s2 { color: #34d399; }
+    .status .tag.s3 { color: #f87171; }
+    .hint {
+      margin-top: 16px; padding: 12px 16px; border-radius: 10px;
+      background: rgba(2, 6, 23, 0.5); border: 1px solid rgba(148, 163, 184, 0.15);
+      font-size: 12.5px; line-height: 1.8; color: #cbd5e1;
+    }
+    .hint b { color: #a5b4fc; }
+    .hint ol { padding-left: 20px; }
+    .error { color: #f87171; font-size: 12.5px; min-height: 18px; margin-bottom: 8px; }
+    .footer {
+      margin-top: 20px; padding-top: 14px;
+      border-top: 1px solid rgba(148, 163, 184, 0.15);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; color: #64748b;
+    }
+    .footer .update { color: #94a3b8; }
+    #update-line { margin-left: 8px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">DS</div>
+    <h1>无法连接到 DSH 服务端</h1>
+    <p class="sub">
+      桌面端需要连接正在运行的 DeepSeek Harness 服务。
+      你可以让桌面端自动启动服务端（下方托管开关），或手动启动后重试。
+    </p>
+
+    <label for="server-url">服务器地址</label>
+    <div class="row">
+      <input type="text" id="server-url" spellcheck="false" placeholder="http://127.0.0.1:3080" />
+      <button class="btn-primary" id="save-connect">保存并重连</button>
+    </div>
+    <div class="row">
+      <button class="btn-ghost" id="retry">重试连接</button>
+      <button class="btn-ghost" id="reset">恢复默认地址</button>
+    </div>
+    <div class="error" id="error"></div>
+
+    <div class="section">
+      <h2>服务端托管</h2>
+      <label class="check">
+        <input type="checkbox" id="manage-server" />
+        <span>连接失败时自动启动 DSH 服务端（退出应用时自动关闭）</span>
+      </label>
+      <label for="server-command">启动命令</label>
+      <div class="row">
+        <input type="text" id="server-command" spellcheck="false" placeholder="dsh web --no-open" />
+        <button class="btn-ghost" id="save-command">保存</button>
+      </div>
+      <div class="row">
+        <button class="btn-primary" id="start-server">启动服务端</button>
+        <button class="btn-ghost" id="stop-server">停止服务端</button>
+      </div>
+      <div class="status">状态：<span class="tag s0" id="server-status">—</span></div>
+    </div>
+
+    <div class="hint">
+      <b>手动启动的方法（一般不必要，桌面端会自动拉起）：</b>
+      <ol>
+        <li>在命令行中运行 <code>dsh web</code>（若 <code>dsh</code> 不在 PATH，用 <code>npx @deepseek-ai/dsh web</code>）</li>
+        <li>等待输出提示服务已在 <code>127.0.0.1:3080</code> 监听</li>
+        <li>回到本窗口，点击「重试连接」</li>
+      </ol>
+    </div>
+
+    <div class="footer">
+      <span>DeepSeek Harness 桌面端 <span id="version"></span></span>
+      <span class="update">更新状态：<span id="update-line">—</span></span>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const dsh = window.dshDesktop;
+      if (!dsh) return;
+
+      const input = document.getElementById('server-url');
+      const errorEl = document.getElementById('error');
+      const versionEl = document.getElementById('version');
+      const updateLine = document.getElementById('update-line');
+      const manageCheck = document.getElementById('manage-server');
+      const cmdInput = document.getElementById('server-command');
+      const serverStatusEl = document.getElementById('server-status');
+
+      const params = new URLSearchParams(window.location.search);
+      input.value = params.get('serverUrl') || 'http://127.0.0.1:3080';
+
+      function setError(msg) { errorEl.textContent = msg || ''; }
+
+      const STATUS_TEXT = {
+        idle: ['—', 's0'],
+        starting: ['正在启动服务端…', 's1'],
+        started: ['服务端已就绪', 's2'],
+        stopping: ['正在停止服务端…', 's1'],
+        stopped: ['服务端已停止', 's3'],
+        failed: ['启动失败', 's3'],
+      };
+
+      function renderServerStatus(s) {
+        const [text, cls] = STATUS_TEXT[s.state] || STATUS_TEXT.idle;
+        let msg = text;
+        if (s.state === 'starting' && s.command) msg += '（' + s.command + '）';
+        if (s.state === 'failed' && s.message) msg += '：' + s.message;
+        serverStatusEl.textContent = msg;
+        serverStatusEl.className = 'tag ' + cls;
+      }
+
+      dsh.getAppInfo().then((info) => {
+        versionEl.textContent = 'v' + info.version;
+        if (info.serverStatus) renderServerStatus(info.serverStatus);
+      }).catch(() => {});
+
+      dsh.getSettings().then((s) => {
+        manageCheck.checked = !!s.manageServer;
+        cmdInput.value = s.serverCommand || s.defaultServerCommand || 'dsh web --no-open';
+      }).catch(() => {});
+
+      dsh.onServerStatus(renderServerStatus);
+
+      dsh.onUpdateStatus((s) => {
+        let text = '—';
+        switch (s.state) {
+          case 'checking': text = '正在检查更新…'; break;
+          case 'available': text = '发现新版本 v' + s.version + '，正在后台下载…'; break;
+          case 'downloading': text = '下载中 ' + s.percent + '%'; break;
+          case 'downloaded': text = 'v' + s.version + ' 已就绪，重启后安装'; break;
+          case 'up-to-date': text = '已是最新版本'; break;
+          case 'error': text = '检查更新失败'; break;
+          case 'dev': text = '开发模式，不检查更新'; break;
+          default: text = '—';
+        }
+        updateLine.textContent = text;
+      });
+
+      document.getElementById('retry').addEventListener('click', () => dsh.retryConnect());
+
+      document.getElementById('save-connect').addEventListener('click', async () => {
+        setError('');
+        try {
+          const res = await dsh.setSettings({ serverUrl: input.value.trim() });
+          input.value = res.serverUrl;
+          dsh.retryConnect();
+        } catch (e) {
+          setError(e && e.message ? e.message : '保存失败');
+        }
+      });
+
+      document.getElementById('reset').addEventListener('click', async () => {
+        setError('');
+        try {
+          const info = await dsh.getAppInfo();
+          const res = await dsh.setSettings({ serverUrl: info.defaultServerUrl });
+          input.value = res.serverUrl;
+          dsh.retryConnect();
+        } catch (e) {
+          setError(e && e.message ? e.message : '重置失败');
+        }
+      });
+
+      manageCheck.addEventListener('change', () => {
+        setError('');
+        dsh.setSettings({ manageServer: manageCheck.checked }).catch((e) => {
+          setError(e && e.message ? e.message : '保存托管设置失败');
+          manageCheck.checked = !manageCheck.checked;
+        });
+      });
+
+      document.getElementById('save-command').addEventListener('click', async () => {
+        setError('');
+        const value = cmdInput.value.trim();
+        if (!value) { setError('启动命令不能为空'); return; }
+        try {
+          await dsh.setSettings({ serverCommand: value });
+          cmdInput.value = value;
+        } catch (e) {
+          setError(e && e.message ? e.message : '保存命令失败');
+        }
+      });
+
+      document.getElementById('start-server').addEventListener('click', () => {
+        setError('');
+        dsh.startServer();
+      });
+
+      document.getElementById('stop-server').addEventListener('click', () => {
+        setError('');
+        dsh.stopServer();
+      });
+    })();
+  </script>
+</body>
+</html>
