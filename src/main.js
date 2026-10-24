@@ -10,6 +10,9 @@ const DEFAULT_SERVER_URL = 'http://127.0.0.1:3080';
 // 注意：不要用 `npx dsh web` —— npx 无法解析裸命令 `dsh`（报 could not determine executable to run）。
 // `dsh` 本身就在 PATH 上（npx 缓存 .bin 目录）；--no-open 防止拉起服务时额外打开浏览器。
 const DEFAULT_SERVER_COMMAND = 'dsh web --no-open';
+// 自动更新源仓库（与 package.json 的 build.publish 保持一致；私有仓库时用 settings.json 的 updateToken）
+const UPDATE_OWNER = 'yi1k';
+const UPDATE_REPO = 'DpsK';
 const UPDATE_CHECK_INTERVAL_MS = 4 * 60 * 60 * 1000; // 每 4 小时检查一次更新
 const SERVER_READY_TIMEOUT_MS = 60 * 1000; // 托管服务端等待就绪超时
 
@@ -412,6 +415,20 @@ function stopManagedServer() {
 // 自动更新（electron-updater + GitHub Releases）
 // ---------------------------------------------------------------------------
 function initAutoUpdater() {
+  // 私有仓库支持：settings.json 中配置 updateToken（GitHub PAT，需 repo/contents:read 权限）
+  // 未配置时按 app-update.yml 走公开访问（仓库需为公开）。
+  const updateToken = readSettings().updateToken;
+  if (typeof updateToken === 'string' && updateToken.trim()) {
+    logMain('update: private repo token configured');
+    autoUpdater.setFeedURL({
+      provider: 'github',
+      owner: UPDATE_OWNER,
+      repo: UPDATE_REPO,
+      private: true,
+      token: updateToken.trim(),
+    });
+  }
+
   // 自定义 logger 写入 userData/main.log：
   // 打包后的 GUI 应用无控制台，electron-updater 默认写 console 会触发 EPIPE 未捕获异常
   autoUpdater.logger = {

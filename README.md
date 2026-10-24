@@ -55,9 +55,16 @@ npm run dist    # 生成 NSIS 安装包（默认在 dist/ 下）
    比对版本号（要求使用语义化版本，新版本号必须大于当前版本）。
 3. 发现新版本自动后台下载，完成后弹窗询问是否立即重启安装。
 
-### 首次使用前需要修改的地方
+### 仓库配置（已完成）
 
-在 `package.json` 中把仓库地址与发布配置改成你自己的 GitHub 仓库：
+仓库已配置为 **github.com/yi1k/DpsK**（`package.json` 的 `repository` 与 `build.publish` 均已指向该仓库）。
+
+**私有仓库说明**：electron-updater 默认无法读取私有仓库的 Release。两种解决方式：
+
+- **方式 1（推荐）**：在 GitHub 仓库 Settings 里把仓库改为 **Public**，无需其他配置；
+- **方式 2（保持私有）**：在 `%APPDATA%/DeepSeek Harness/settings.json` 中加 `"updateToken": "<你的 GitHub PAT>"`（PAT 需 `repo` 权限），应用会用令牌读取 Release。
+
+如需迁移到别的仓库，改 `package.json` 两处：
 
 ```jsonc
 "repository": { "url": "https://github.com/<你的用户名>/dsh-desktop.git" },
